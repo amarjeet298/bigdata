@@ -1,19 +1,27 @@
 package t10.iss.nus
 
+import com.typesafe.config.ConfigFactory
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
   * Test IO to wasb
   */
-object WasbIOTest {
-
+object App {
 
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("WordCount Application").setMaster("local")
+    // Load properties
+    val fileName = ConfigFactory.load().getString("app.env.fileLocation")
+    println(s"My secret value is $fileName")
+
+    val host = ConfigFactory.load().getString("app.env.sparkHost")
+
+    val conf = new SparkConf().setAppName("WordCount Application").setMaster(host)
     val sc = new SparkContext(conf);
 
-    val fileName = args(0);
+
+
+    //val fileName = args(value);
     val lines = sc.textFile(fileName).cache()
     val c = lines.count()
 
