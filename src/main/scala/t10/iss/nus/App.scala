@@ -11,10 +11,12 @@ object App {
   def main(args: Array[String]) {
 
     // Load properties
-    val fileName = ConfigFactory.load().getString("app.env.fileLocation")
+    val config = ConfigFactory.load().getConfig("app.env")
+
+    val fileName = config.getString("fileLocation")
     println(s"My secret value is $fileName")
 
-    val host = ConfigFactory.load().getString("app.env.sparkHost")
+    val host = config.getString("sparkHost")
 
     val conf = new SparkConf().setAppName("WordCount Application").setMaster(host)
     val sc = new SparkContext(conf);
